@@ -10,11 +10,13 @@ public class PlayerController : MonoBehaviour
     private float horizontalSpeed;
     private float verticalSpeed;
     private float xRange = 7.0f;
+    public AudioClip crashSound;
+    private AudioSource carSound;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        carSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -39,8 +41,13 @@ public class PlayerController : MonoBehaviour
         //Will move vehicle forward / turn vehicle
         transform.Translate(Vector3.forward * Time.deltaTime * speed * verticalSpeed);
         transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed * horizontalSpeed);
-        
-        
-        
+           
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacles"))
+        {
+            carSound.PlayOneShot(crashSound, 1.0f);
+        }
     }
 }
